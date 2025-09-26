@@ -27,7 +27,7 @@ int validate_birthdate(char buf[]) {
         ++i;
     }
 
-    if ((month < 1) || (month > 12) || (day > days_per_month[month-1] && month != 2 && day != 29) || (day < 0)) {
+    if ((month < 1) || (month > 12) || (day > days_per_month[month-1] && month != 2 && day != 29) || (day < 1)) {
         return 0;        
     }
     
