@@ -11,19 +11,19 @@ static const int days_per_month[] = {
 };
 
 int validate_birthdate(char buf[]) {
-    if (strlen(buf) != 5) { // not MM/DD
+    if (strlen(buf) != 5) { // not MM/DD or MM/D
         return 0;
     }
     
     int i = 0, month = 0, day = 0;
     while (buf[i] != '\0') {
-        if ((buf[i] == '/') ||(buf[i] >= '1' && buf[i] <= '9')) {
+        if ((buf[i] == '/') ||(buf[i] >= '0' && buf[i] <= '9')) {
             if (i < 2) {
                 month = month * 10 + (buf[i] - '0'); 
             } else if (i > 2) {
                 day = day * 10 + (buf[i] - '0'); 
             } 
-        }
+        } 
         ++i;
     }
 
@@ -35,9 +35,11 @@ int validate_birthdate(char buf[]) {
 }
 
 void print_usage() {
-    printf("Usage:\n");
-    printf("birthday            # if set, check if it's your birthday\n");
-    printf("birthday -s MM/DD   # (re)set birthday\n");
+    printf("Usage:\n"
+           "birthday            # if set, receive a message\n"
+           "birthday -s MM/DD   # (re)set birthday\n"
+           "birthday --help      # help command\n"
+    );
 }
 
 int main(int argc, char *argv[]) {
@@ -57,7 +59,7 @@ int main(int argc, char *argv[]) {
     int exists = (stat("birthday.txt", &st) == 0);
 
     // proper length and checking flag
-    if ((argc == 3) && (argv[1][0] == '-' && argv[1][1] == 's')) {
+    if ((argc == 3) && (argv[1][0] == '-' && argv[1][1] == 's') && (strlen(argv[1]) == 2)) {
         if (!validate_birthdate(argv[2])) {
             print_usage();
             return -1;
@@ -71,6 +73,16 @@ int main(int argc, char *argv[]) {
         close(fd);
         return 0; 
     } 
+
+    if ((argc == 2) && (argv[1][0] == '-' && argv[1][1] == '-'  && argv[1][2] == 'h'  && argv[1][3] == 'e'  && argv[1][4] == 'l' && argv[1][5] == 'p') && (strlen(argv[1]) == 6)) {
+        printf("Usage: birthday\n"
+               "Usage: birthday [OPTION] [MM/DD]\n"
+               "Receive a birthday message from the OS.\n\n"
+               "no arguments             if set, receive a message"
+               "-s                       reset birthday\n"
+               "   --help    display this help and exit\n\n"
+        );
+    }
     if (argc == 1 && exists) {
         fd = open("birthday.txt", O_RDWR);
         if (fd < 0) { // error
