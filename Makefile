@@ -144,6 +144,7 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_date\
 	$U/_birthday\
+	$U/_birthdaytest\
 
 $U/_birthday: $U/birthday.o $U/time.o $(ULIB)
 	$(LD) $(LDFLAGS) -T $U/user.ld -o $U/_birthday $U/birthday.o $U/time.o $(ULIB)

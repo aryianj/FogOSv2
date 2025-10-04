@@ -82,6 +82,7 @@ int main(int argc, char *argv[]) {
                "-s                       reset birthday\n"
                "   --help    display this help and exit\n\n"
         );
+        return 0;
     }
     if (argc == 1 && exists) {
         fd = open("birthday.txt", O_RDWR);
